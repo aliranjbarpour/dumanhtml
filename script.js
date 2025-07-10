@@ -51,7 +51,6 @@ closeMenu && closeMenu.addEventListener('click', () => {
     document.body.style.overflow = '';
     menuToggle.classList.remove('hide-menu-toggle');
 });
-// بستن ساید منو با کلیک روی overlay
 overlay && overlay.addEventListener('click', () => {
     navbar.classList.remove('open');
     overlay.classList.remove('active');
@@ -79,4 +78,93 @@ function handleAdvisorVisibility() {
 }
 window.addEventListener('scroll', handleAdvisorVisibility);
 window.addEventListener('resize', handleAdvisorVisibility);
-document.addEventListener('DOMContentLoaded', handleAdvisorVisibility); 
+document.addEventListener('DOMContentLoaded', handleAdvisorVisibility);
+
+// مدیریت تاخیر بسته شدن ساب‌منو خدمات
+(function() {
+    var dropdown = document.querySelector('.has-dropdown');
+    var submenu = dropdown ? dropdown.querySelector('.dropdown-menu') : null;
+    var timer;
+    if(dropdown && submenu) {
+        dropdown.addEventListener('mouseenter', function() {
+            clearTimeout(timer);
+            submenu.style.display = 'block';
+        });
+        dropdown.addEventListener('mouseleave', function() {
+            timer = setTimeout(function() {
+                submenu.style.display = 'none';
+            }, 300); // تاخیر ۳۰۰ میلی‌ثانیه
+        });
+        submenu.addEventListener('mouseenter', function() {
+            clearTimeout(timer);
+            submenu.style.display = 'block';
+        });
+        submenu.addEventListener('mouseleave', function() {
+            timer = setTimeout(function() {
+                submenu.style.display = 'none';
+            }, 300);
+        });
+    }
+})();
+
+// بهبود نهایی: کنترل ساب‌منو فقط در موبایل با JS، در دسکتاپ فقط CSS
+(function() {
+    function isMobile() {
+        return window.innerWidth <= 900;
+    }
+    var dropdown = document.querySelector('.has-dropdown');
+    var submenu = dropdown ? dropdown.querySelector('.dropdown-menu') : null;
+    var timer;
+    if(dropdown && submenu) {
+        // باز و بسته شدن با کلیک یا لمس فقط در موبایل
+        dropdown.addEventListener('click', function(e) {
+            if(isMobile()) {
+                e.preventDefault();
+                if(submenu.style.display === 'block') {
+                    submenu.style.display = '';
+                } else {
+                    submenu.style.display = 'block';
+                }
+            }
+        });
+        // باز شدن با هاور فقط در موبایل (برای تبلت یا دستگاه لمسی)
+        dropdown.addEventListener('mouseenter', function() {
+            if(isMobile()) {
+                clearTimeout(timer);
+                submenu.style.display = 'block';
+            }
+        });
+        dropdown.addEventListener('mouseleave', function() {
+            if(isMobile()) {
+                timer = setTimeout(function() {
+                    submenu.style.display = '';
+                }, 300);
+            }
+        });
+        submenu.addEventListener('mouseenter', function() {
+            if(isMobile()) {
+                clearTimeout(timer);
+                submenu.style.display = 'block';
+            }
+        });
+        submenu.addEventListener('mouseleave', function() {
+            if(isMobile()) {
+                timer = setTimeout(function() {
+                    submenu.style.display = '';
+                }, 300);
+            }
+        });
+        // بستن ساب‌منو با کلیک بیرون فقط در موبایل
+        document.addEventListener('click', function(e) {
+            if(isMobile() && !dropdown.contains(e.target)) {
+                submenu.style.display = '';
+            }
+        });
+        // ریست وضعیت ساب‌منو هنگام تغییر سایز صفحه
+        window.addEventListener('resize', function() {
+            if(!isMobile()) {
+                submenu.style.display = '';
+            }
+        });
+    }
+})(); 

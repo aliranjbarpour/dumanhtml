@@ -824,13 +824,26 @@ body {
     padding: 1.2rem;
 }
 .faq-icon {
-    margin-right: 0;
-    margin-left: 0.75em;
-    transition: transform 0.3s;
-    font-size: 1.2em;
+    width: 1.1em;
+    height: 1.1em;
+    margin-right: 0.5em;
+    margin-left: 0.2em;
+    vertical-align: middle;
+    transition: transform 0.25s, filter 0.25s;
+    filter: grayscale(1) brightness(0.5);
+    display: inline-block;
 }
-.faq-question[aria-expanded="true"] .faq-icon {
+.faq-item.open .faq-icon {
     transform: rotate(180deg);
+    filter: none;
+}
+.faq-item.open .faq-icon {
+    filter: none;
+}
+.faq-item.open .faq-icon {
+    /* اگر svg تک‌رنگ باشد */
+    /* fill: #0171e3; */
+    /* برای img svg فقط filter رنگ را حذف می‌کنیم */
 }
 .features-section {
     margin: 3rem 0 2.5rem 0;
@@ -1276,3 +1289,69 @@ body {
     pointer-events: none !important;
     transition: opacity 0.4s;
 } 
+/* --- Dropdown Menu --- */
+.has-dropdown {
+    position: relative;
+}
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: rgba(255,255,255,0.95);
+    box-shadow: 0 8px 32px 0 rgba(31,38,135,0.10);
+    border-radius: 12px;
+    min-width: 170px;
+    z-index: 200;
+    padding: 0.5rem 0;
+    margin-top: 28px;
+    border: 1px solid #e5e7eb;
+    backdrop-filter: blur(8px);
+}
+.has-dropdown:hover > .dropdown-menu {
+    display: block;
+}
+.dropdown-menu li {
+    list-style: none;
+}
+.dropdown-menu li a {
+    display: block;
+    padding: 0.7rem 1.2rem;
+    color: #222;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 400;
+    transition: background 0.2s, color 0.2s;
+    border-radius: 8px;
+}
+.dropdown-menu li a:hover {
+    background: #f3f4f6;
+    color: #0171e3;
+}
+.dropdown-arrow {
+    width: 1em;
+    height: 0.7em;
+    margin-right: 0.3em;
+    transition: transform 0.25s, filter 0.25s;
+    display: inline-block;
+    vertical-align: middle;
+    filter: grayscale(1) brightness(0.5);
+}
+.has-dropdown:hover > a .dropdown-arrow,
+.has-dropdown.open > a .dropdown-arrow {
+    transform: rotate(180deg);
+    filter: none;
+    /* رنگ آبی مثل لینک خدمات */
+    filter: none;
+    /* اگر svg تک‌رنگ باشد */
+    /* برای svgهای تک‌رنگ، fill را تغییر می‌دهیم */
+    fill: #0171e3;
+}
+@media (max-width: 900px) {
+    .dropdown-arrow {
+        margin-right: 0.6em;
+        width: 1.2em;
+        height: 0.7em;
+    }
+}
+/* --- End Dropdown Menu --- */ 
