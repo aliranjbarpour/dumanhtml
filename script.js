@@ -167,4 +167,85 @@ document.addEventListener('DOMContentLoaded', handleAdvisorVisibility);
             }
         });
     }
+})();
+
+// Testimonials Slider
+(function() {
+    var slides = document.querySelectorAll('.testimonials-slide');
+    var indicators = document.querySelectorAll('.indicator');
+    if (!slides.length || !indicators.length) return;
+    var current = 0;
+    var autoplayInterval;
+    var isHovered = false;
+    function showSlide(idx, direction = 'next') {
+        slides.forEach(function(slide) {
+            slide.classList.remove('active');
+        });
+        indicators.forEach(function(indicator) {
+            indicator.classList.remove('active');
+        });
+        slides[idx].classList.add('active');
+        indicators[idx].classList.add('active');
+    }
+    function nextSlide() {
+        current = (current + 1) % slides.length;
+        showSlide(current, 'next');
+    }
+    function goToSlide(idx) {
+        current = idx;
+        showSlide(current);
+    }
+    function startAutoplay() {
+        if (!isHovered) {
+            autoplayInterval = setInterval(nextSlide, 2500); // 2.5 ثانیه
+        }
+    }
+    function stopAutoplay() {
+        clearInterval(autoplayInterval);
+    }
+    indicators.forEach(function(indicator, idx) {
+        indicator.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            goToSlide(idx);
+            stopAutoplay();
+            startAutoplay();
+        });
+    });
+    var slider = document.querySelector('.testimonials-slider');
+    if (slider) {
+        slider.addEventListener('mouseenter', function() {
+            isHovered = true;
+            stopAutoplay();
+        });
+        slider.addEventListener('mouseleave', function() {
+            isHovered = false;
+            startAutoplay();
+        });
+    }
+    showSlide(current);
+    startAutoplay();
+})(); 
+
+// Tabs for Content Tabs Section
+(function() {
+  var tabBtns = document.querySelectorAll('.content-tabs .tab-btn');
+  var tabContents = document.querySelectorAll('.content-tabs-info .tab-content');
+  var tabImages = document.querySelectorAll('.content-tabs-image .tab-image');
+  if (!tabBtns.length || !tabContents.length) return;
+  tabBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      // حذف اکتیو از همه تب‌ها و محتواها و عکس‌ها
+      tabBtns.forEach(function(b) { b.classList.remove('active'); });
+      tabContents.forEach(function(tc) { tc.classList.remove('active'); });
+      tabImages.forEach(function(img) { img.classList.remove('active'); });
+      // اکتیو کردن تب و محتوای انتخابی و عکس مربوطه
+      btn.classList.add('active');
+      var tabId = btn.getAttribute('data-tab');
+      var content = document.getElementById('tab-' + tabId);
+      var image = document.getElementById('img-' + tabId);
+      if(content) content.classList.add('active');
+      if(image) image.classList.add('active');
+    });
+  });
 })(); 
